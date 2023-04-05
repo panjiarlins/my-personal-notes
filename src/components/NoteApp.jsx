@@ -1,6 +1,6 @@
 import React from 'react';
-import { getInitialData } from '../utils';
-import NoteInput from './NoteInput';
+import { getInitialData, showFormattedDate } from '../utils';
+import NoteAppBody from './NoteAppBody';
 
 class NoteApp extends React.Component{
     constructor(props){
@@ -11,6 +11,8 @@ class NoteApp extends React.Component{
         }
 
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
+        this.onDeleteNoteHandler = this.onDeleteNoteHandler.bind(this);
+        this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
     }
 
     onAddNoteHandler({ title, body }){
@@ -30,12 +32,26 @@ class NoteApp extends React.Component{
         });
     }
 
+    onDeleteNoteHandler(id){
+
+    }
+
+    onArchiveNoteHandler(id){
+
+    }
+
     render(){
         return (
             <>
-            <NoteInput addNote={this.onAddNoteHandler} />
+            <NoteAppBody
+            addNote={this.onAddNoteHandler}
+            notes={this.state.notes}
+            showFormattedDate={showFormattedDate}
+            onDelete={this.onDeleteNoteHandler}
+            onArchive={this.onArchiveNoteHandler}
+            />
             </>
-        )
+        );
     }
 }
 
