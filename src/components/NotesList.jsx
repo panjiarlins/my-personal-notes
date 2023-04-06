@@ -1,10 +1,10 @@
 import React from 'react';
 import NoteItem from './NoteItem';
 
-function NotesList({ notes, showFormattedDate, onDelete, onArchive }){
+function NotesList({ notes, showFormattedDate, onDelete, onArchive, isArchived }){
     return (
         <div>
-            <h2>Catatan Aktif</h2>
+            <h2>{isArchived ? 'Arsip' : 'Catatan Aktif'}</h2>
             {
                 !!notes.length ?
                 <div className="notes-list">
@@ -16,6 +16,7 @@ function NotesList({ notes, showFormattedDate, onDelete, onArchive }){
                             showFormattedDate={showFormattedDate}
                             onDelete={onDelete}
                             onArchive={onArchive}
+                            isArchived={isArchived}
                             />
                         ))
                     }

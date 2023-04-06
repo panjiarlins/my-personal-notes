@@ -34,11 +34,20 @@ class NoteApp extends React.Component{
 
     onDeleteNoteHandler(id){
         const notes = this.state.notes.filter(note => note.id !== id);
+        console.log(notes);
         this.setState({ notes });
     }
 
     onArchiveNoteHandler(id){
-
+        this.setState((prevState) => {
+            const notes = prevState.notes.map(note => {
+                if (note.id === id){
+                    note.archived = !note.archived;
+                }
+                return note;
+            });
+            return { notes };
+        });
     }
 
     render(){
