@@ -9,6 +9,8 @@ class NoteInput extends React.Component{
             body: '',
         }
 
+        this.numTitleCharLimit = 50;
+
         this.onTitleChangeEventHandler = this.onTitleChangeEventHandler.bind(this);
         this.onBodyChangeEventHandler = this.onBodyChangeEventHandler.bind(this);
         this.onSubmitEventHandler = this.onSubmitEventHandler.bind(this);
@@ -17,7 +19,7 @@ class NoteInput extends React.Component{
     onTitleChangeEventHandler(event){
         this.setState(() => {
             return {
-                title: event.target.value,
+                title: event.target.value.slice(0, this.numTitleCharLimit),
             };
         });
     }
@@ -39,13 +41,14 @@ class NoteInput extends React.Component{
         return (
             <div className="note-input">
                 <h2>Buat Catatan</h2>
+                <p className="note-input__title__char-limit">Sisa karakter: {this.numTitleCharLimit - this.state.title.length}</p>
                 <form onSubmit={this.onSubmitEventHandler}>
                     <input className="note-input__title" type="text" placeholder="Masukkan judul catatan ...." value={this.state.title} onChange={this.onTitleChangeEventHandler} />
                     <textarea className="note-input__body" placeholder="Tuliskan catatanmu disini ...." value={this.state.body} onChange={this.onBodyChangeEventHandler} />
                     <button type="submit">Buat</button>
                 </form>
             </div>
-        )
+        );
     }
 }
 
