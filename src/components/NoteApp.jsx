@@ -33,7 +33,8 @@ class NoteApp extends React.Component{
     }
 
     onDeleteNoteHandler(id){
-
+        const notes = this.state.notes.filter(note => note.id !== id);
+        this.setState({ notes });
     }
 
     onArchiveNoteHandler(id){
