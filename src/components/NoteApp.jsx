@@ -1,5 +1,6 @@
 import React from 'react';
 import { getInitialData, showFormattedDate } from '../utils';
+import NoteAppHeader from './NoteAppHeader';
 import NoteAppBody from './NoteAppBody';
 
 class NoteApp extends React.Component{
@@ -8,11 +9,13 @@ class NoteApp extends React.Component{
 
         this.state = {
             notes: getInitialData(),
+            keyword: '',
         }
 
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
         this.onDeleteNoteHandler = this.onDeleteNoteHandler.bind(this);
         this.onArchiveNoteHandler = this.onArchiveNoteHandler.bind(this);
+        this.onSearchNoteHandler = this.onSearchNoteHandler.bind(this);
     }
 
     onAddNoteHandler({ title, body }){
@@ -50,12 +53,25 @@ class NoteApp extends React.Component{
         });
     }
 
+    onSearchNoteHandler(keyword){
+        this.setState({ keyword });
+    }
+
     render(){
         return (
             <>
+            <NoteAppHeader onSearch={this.onSearchNoteHandler} />
             <NoteAppBody
             addNote={this.onAddNoteHandler}
-            notes={this.state.notes}
+            notes={
+                this.state.keyword.trim() === '' ?
+                this.state.notes
+                : this.state.notes.filter(note => {
+                    const keyword = this.state.keyword.trim().toLowerCase();
+                    const title = note.title.trim().toLowerCase();
+                    return title.includes(keyword);
+                })
+            }
             showFormattedDate={showFormattedDate}
             onDelete={this.onDeleteNoteHandler}
             onArchive={this.onArchiveNoteHandler}
