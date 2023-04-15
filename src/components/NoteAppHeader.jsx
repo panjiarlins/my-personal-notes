@@ -1,12 +1,16 @@
 import React from 'react';
-import NoteSearch from './NoteSearch';
+import { Link } from 'react-router-dom';
 
-function NoteAppHeader({ onSearch }){
+function NoteAppHeader(){
     return (
-        <div className="note-app__header">
-            <h1>Catatan</h1>
-            <NoteSearch onSearch={onSearch} />
-        </div>
+        <header>
+            <nav className="navigation">
+                <ul>
+                    <li><h1><Link to="/">Aplikasi Catatan</Link></h1></li>
+                    <li><Link to="/archives">Arsip</Link></li>
+                </ul>
+            </nav>
+        </header>
     ); 
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NoteItem from './NoteItem';
 
-function NotesList({ notes, showFormattedDate, onDelete, onArchive, isArchived }){
+function NotesList({ notes, showFormattedDate }){
     return (
         <div>
-            <h2>{isArchived ? 'Arsip' : 'Catatan Aktif'}</h2>
             {
                 !!notes.length ?
                 <div className="notes-list">
@@ -14,17 +14,22 @@ function NotesList({ notes, showFormattedDate, onDelete, onArchive, isArchived }
                             key={note.id}
                             {...note}
                             showFormattedDate={showFormattedDate}
-                            onDelete={onDelete}
-                            onArchive={onArchive}
-                            isArchived={isArchived}
                             />
                         ))
                     }
                 </div>
-                : <div className="notes-list__empty-message">Tidak Ada Catatan</div>
+                :
+                <div className="notes-list-empty">
+                    <p>Tidak ada catatan</p>
+                </div>
             }
         </div>
     );
 }
+
+NotesList.propTypes = {
+    notes: PropTypes.array.isRequired,
+    showFormattedDate: PropTypes.func.isRequired,
+};
 
 export default NotesList;
