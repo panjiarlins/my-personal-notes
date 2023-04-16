@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import NoteItemTitle from './NoteItemTitle';
 import NoteItemDate from './NoteItemDate';
 import NoteItemBody from './NoteItemBody';
 
-function NoteItem({ title, createdAt, body, showFormattedDate }){
+function NoteItem({ id, title, createdAt, body, showFormattedDate }){
     return (
         <div className="note-item">
-            <NoteItemTitle title={title} />
+            <h3><Link to={`/notes/${id}`}><NoteItemTitle title={title} /></Link></h3>
             <NoteItemDate createdAt={createdAt} showFormattedDate={showFormattedDate} />
             <NoteItemBody body={body} />
         </div>
@@ -15,6 +16,7 @@ function NoteItem({ title, createdAt, body, showFormattedDate }){
 }
 
 NoteItem.propTypes = {
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,

@@ -1,5 +1,4 @@
 import React from 'react';
-import NoteAppHeader from '../components/NoteAppHeader';
 import NoteAppBody from '../components/NoteAppBody';
 import { getArchivedNotes } from '../utils/local-data';
 import { showFormattedDate } from '../utils';
@@ -15,14 +14,11 @@ class ArchivesPage extends React.Component{
 
     render(){
         return (
-            <>
-            <NoteAppHeader />
             <NoteAppBody
             isArchived={true}
             notes={this.state.notes}
             showFormattedDate={showFormattedDate}
             />
-            </>
         );
     }
 }
