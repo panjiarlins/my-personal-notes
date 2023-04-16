@@ -3,47 +3,34 @@ import PropTypes from 'prop-types';
 import NoteSearch from './NoteSearch';
 import NotesList from './NotesList';
 
-class NoteAppBody extends React.Component{
-    constructor(props){
-        super(props);
-
-        this.state = {
-            keyword: '',
-        };
-
-        this.onSearchHandler = this.onSearchHandler.bind(this);
-    }
-
-    onSearchHandler(keyword){
-        this.setState({ keyword });
-    }
-
-    render(){
-        return (
-            <main>
-                <h2>Catatan {this.props.isArchived ? 'Arsip' : 'Aktif'}</h2>
-                <NoteSearch onSearch={this.onSearchHandler} />
-                <NotesList
-                notes={
-                    this.state.keyword.trim() === '' ?
-                    this.props.notes
-                    :
-                    this.props.notes.filter(note => {
-                        const keyword = this.state.keyword.trim().toLowerCase();
-                        const title = note.title.trim().toLowerCase();
-                        return title.includes(keyword);
-                    })
-                }
-                showFormattedDate={this.props.showFormattedDate}
-                />
-            </main>
-        );
-    }
+function NoteAppBody({ notes, isArchived, keyword, onSearch, showFormattedDate}){
+    return (
+        <main>
+            <h2>Catatan {isArchived ? 'Arsip' : 'Aktif'}</h2>
+            <NoteSearch keyword={keyword} onSearch={onSearch} />
+            <NotesList
+            notes={
+                keyword.trim() === '' ?
+                notes
+                :
+                notes.filter(
+                    note => note.title.trim().toLowerCase().includes(
+                        keyword.trim().toLowerCase()
+                    )
+                )
+            }
+            showFormattedDate={showFormattedDate}
+            />
+        </main>
+    );
 }
 
 NoteAppBody.propTypes = {
     isArchived: PropTypes.bool.isRequired,
     notes: PropTypes.array.isRequired,
+    keyword: PropTypes.string.isRequired,
+    onSearch: PropTypes.func.isRequired,
+    showFormattedDate: PropTypes.func.isRequired,
 };
 
 export default NoteAppBody;

@@ -1,15 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function NoteSearch({ onSearch }){
+function NoteSearch({ keyword, onSearch }){
     return (
         <div className="search-bar">
-            <input type="text" placeholder="Cari catatan berdasarkan judul ...." onKeyUp={event => onSearch(event.target.value)} />
+            <input
+            type="text"
+            placeholder="Cari catatan berdasarkan judul ...."
+            value={keyword}
+            onChange={event => onSearch(event.target.value)}
+            />
         </div>
     );
 }
 
 NoteSearch.propTypes = {
+    keyword: PropTypes.string.isRequired,
     onSearch: PropTypes.func.isRequired,
 };
 
