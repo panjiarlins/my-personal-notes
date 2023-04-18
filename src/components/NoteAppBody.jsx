@@ -5,23 +5,23 @@ import NotesList from './NotesList';
 
 function NoteAppBody({ notes, isArchived, keyword, onSearch, showFormattedDate}){
     return (
-        <main>
-            <h2>Catatan {isArchived ? 'Arsip' : 'Aktif'}</h2>
-            <NoteSearch keyword={keyword} onSearch={onSearch} />
-            <NotesList
-            notes={
-                keyword.trim() === '' ?
-                notes
-                :
-                notes.filter(
-                    note => note.title.trim().toLowerCase().includes(
-                        keyword.trim().toLowerCase()
-                    )
+        <>
+        <h2>Catatan {isArchived ? 'Arsip' : 'Aktif'}</h2>
+        <NoteSearch keyword={keyword} onSearch={onSearch} />
+        <NotesList
+        notes={
+            keyword.trim() === '' ?
+            notes
+            :
+            notes.filter(
+                note => note.title.trim().toLowerCase().includes(
+                    keyword.trim().toLowerCase()
                 )
-            }
-            showFormattedDate={showFormattedDate}
-            />
-        </main>
+            )
+        }
+        showFormattedDate={showFormattedDate}
+        />
+        </>
     );
 }
 

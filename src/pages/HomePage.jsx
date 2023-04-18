@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NoteAppBody from '../components/NoteAppBody';
+import NewNoteButton from '../components/NewNoteButton';
 import { useSearchParams } from 'react-router-dom';
 import { getActiveNotes } from '../utils/local-data';
 import { showFormattedDate } from '../utils';
@@ -35,6 +36,7 @@ class HomePage extends React.Component{
 
     render(){
         return (
+            <>
             <NoteAppBody
             isArchived={false}
             notes={this.state.notes}
@@ -42,6 +44,10 @@ class HomePage extends React.Component{
             onSearch={this.onSearchHandler}
             showFormattedDate={showFormattedDate}
             />
+            <div className="homepage__action">
+                <NewNoteButton />
+            </div>
+            </>
         );
     }
 }
