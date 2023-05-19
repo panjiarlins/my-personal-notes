@@ -1,60 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import NoteAppBody from '../components/NoteAppBody';
 import NewNoteButton from '../components/NewNoteButton';
 import { useSearchParams } from 'react-router-dom';
-import { getActiveNotes } from '../utils/local-data';
-import { showFormattedDate } from '../utils';
+import { getActiveNotes } from '../utils/network-data';
 
-function HomePageWrapper(){
+function HomePage(){
     const [searchParams, setSearchParams] = useSearchParams();
-    const keyword = searchParams.get('keyword');
+    const keyword = searchParams.get('keyword') || '';
+    const [notes, setNotes] = React.useState([]);
 
-    const onSearch = keyword => {
-        setSearchParams({ keyword });
+    React.useEffect(() => {
+        getActiveNotes().then(({ data }) => {
+            setNotes(data);
+        });
+    }, []);
+
+    const onSearchHandler = event => {
+        setSearchParams({
+            keyword: event.target.value,
+        });
     }
-
-    return <HomePage defaultKeyword={keyword} onSearch={onSearch} />;
+    
+    return (
+        <>
+        <NoteAppBody
+        isArchived={false}
+        notes={notes}
+        keyword={keyword}
+        onSearch={onSearchHandler}
+        />
+        <div className="homepage__action">
+            <NewNoteButton />
+        </div>
+        </>
+    );
 }
 
-class HomePage extends React.Component{
-    constructor(props){
-        super(props);
-
-        this.state = {
-            notes: getActiveNotes(),
-            keyword: props.defaultKeyword || '',
-        };
-
-        this.onSearchHandler = this.onSearchHandler.bind(this);
-    }
-
-    onSearchHandler(keyword){
-        this.setState({ keyword });
-        this.props.onSearch(keyword);
-    }
-
-    render(){
-        return (
-            <>
-            <NoteAppBody
-            isArchived={false}
-            notes={this.state.notes}
-            keyword={this.state.keyword}
-            onSearch={this.onSearchHandler}
-            showFormattedDate={showFormattedDate}
-            />
-            <div className="homepage__action">
-                <NewNoteButton />
-            </div>
-            </>
-        );
-    }
-}
-
-HomePage.propTypes = {
-    defaultKeyword: PropTypes.string,
-    onSearch: PropTypes.func.isRequired,
-};
-
-export default HomePageWrapper;
+export default HomePage;

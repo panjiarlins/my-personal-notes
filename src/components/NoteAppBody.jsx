@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import NoteSearch from './NoteSearch';
 import NotesList from './NotesList';
 
-function NoteAppBody({ notes, isArchived, keyword, onSearch, showFormattedDate}){
+function NoteAppBody({ notes, isArchived, keyword, onSearch }){
     return (
         <>
         <h2>Catatan {isArchived ? 'Arsip' : 'Aktif'}</h2>
@@ -19,7 +19,6 @@ function NoteAppBody({ notes, isArchived, keyword, onSearch, showFormattedDate})
                 )
             )
         }
-        showFormattedDate={showFormattedDate}
         />
         </>
     );
@@ -30,7 +29,6 @@ NoteAppBody.propTypes = {
     notes: PropTypes.array.isRequired,
     keyword: PropTypes.string.isRequired,
     onSearch: PropTypes.func.isRequired,
-    showFormattedDate: PropTypes.func.isRequired,
 };
 
 export default NoteAppBody;

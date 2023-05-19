@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MdDeleteOutline } from 'react-icons/md';
 
-function DeleteButton({ id, onDelete}){
-    return <MdDeleteOutline className='action' onClick={() => onDelete(id)} />;
+function DeleteButton({ onDelete }){
+    return <MdDeleteOutline className='action' onClick={onDelete} />;
 }
 
 DeleteButton.propTypes = {
-    id: PropTypes.string.isRequired,
     onDelete: PropTypes.func.isRequired,
 };
 

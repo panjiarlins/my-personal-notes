@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NoteItem from './NoteItem';
 
-function NotesList({ notes, showFormattedDate }){
+function NotesList({ notes }){
     return (
         <div>
             {
@@ -13,7 +13,6 @@ function NotesList({ notes, showFormattedDate }){
                             <NoteItem
                             key={note.id}
                             {...note}
-                            showFormattedDate={showFormattedDate}
                             />
                         ))
                     }
@@ -29,7 +28,6 @@ function NotesList({ notes, showFormattedDate }){
 
 NotesList.propTypes = {
     notes: PropTypes.array.isRequired,
-    showFormattedDate: PropTypes.func.isRequired,
 };
 
 export default NotesList;

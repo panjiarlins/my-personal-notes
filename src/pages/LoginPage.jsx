@@ -9,7 +9,6 @@ function LoginPage({ loginSuccess }){
 
     async function onLoginHandler({ email, password }){
         const { error, data } = await login({ email, password });
-
         if (!error){
             loginSuccess(data);
             navigate('/');
@@ -20,7 +19,7 @@ function LoginPage({ loginSuccess }){
         <section className='login-page'>
             <h2>Yuk, login untuk menggunakan aplikasi.</h2>
             <LoginInput login={onLoginHandler} />
-            <p>Belum punya akun? <Link to="/">Daftar di sini</Link></p>
+            <p>Belum punya akun? <Link to="/register">Daftar di sini</Link></p>
         </section>
     );
 }

@@ -8,7 +8,7 @@ function NoteSearch({ keyword, onSearch }){
             type="text"
             placeholder="Cari catatan berdasarkan judul ...."
             value={keyword}
-            onChange={event => onSearch(event.target.value)}
+            onChange={onSearch}
             />
         </div>
     );

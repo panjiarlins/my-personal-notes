@@ -1,39 +1,48 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getNote } from '../utils/local-data';
 import { showFormattedDate } from '../utils';
 import ArchiveButton from '../components/ArchiveButton';
 import DeleteButton from '../components/DeleteButton';
-import { archiveNote, unarchiveNote, deleteNote } from '../utils/local-data';
+import { getNote, archiveNote, unarchiveNote, deleteNote } from '../utils/network-data';
 
 function DetailPage(){
-    const { id } = useParams();
-    const note = getNote(id);
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [note, setNote] = React.useState(null);
 
-    function onArchive(id, isArchived){
-        if (isArchived){
-            unarchiveNote(id);
+    React.useEffect(() => {
+        getNote(id).then(({ data }) => {
+            setNote(data);
+        });
+    }, [id]);
+    
+    const onArchiveHandler = async () => {
+        if (note.archived){
+            await unarchiveNote(id);
             navigate('/archives');
         } else{
-            archiveNote(id);
+            await archiveNote(id);
             navigate('/');
         }
     }
-
-    function onDelete(id){
-        deleteNote(id);
+    
+    const onDeleteHandler = async () => {
+        await deleteNote(id);
         navigate('/');
     }
 
+    if (note === null){
+        return null;
+    }
+    
     return (
         <div className="detail-page">
             <div className="detail-page__title">{note.title}</div>
             <div className="detail-page__createdAt">{showFormattedDate(note.createdAt)}</div>
             <div className="detail-page__body">{note.body}</div>
             <div className="detail-page__action">
-                <ArchiveButton id={id} onArchive={onArchive} isArchived={note.archived} />
-                <DeleteButton id={id} onDelete={onDelete} />
+                <ArchiveButton id={id} onArchive={onArchiveHandler} isArchived={note.archived} />
+                <DeleteButton id={id} onDelete={onDeleteHandler} />
             </div>
         </div>
     );

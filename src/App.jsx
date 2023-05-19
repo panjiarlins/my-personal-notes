@@ -6,7 +6,7 @@ import NoteAppHeader from './components/NoteAppHeader';
 import HomePage from './pages/HomePage';
 import ArchivesPage from './pages/ArchivesPage';
 import DetailPage from './pages/DetailPage';
-import AddNewPage from './pages/AddNewPage';
+import AddNotePage from './pages/AddNotePage';
 import NotFoundPage from './pages/NotFoundPage';
 import { putAccessToken, getUserLogged } from './utils/network-data';
 
@@ -23,9 +23,7 @@ function App() {
 
   const onLoginSuccessHandler = async ({ accessToken }) => {
     putAccessToken(accessToken);
-
     const { data } = await getUserLogged();
-
     setAuthedUser(data);
   }
 
@@ -45,7 +43,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/archives" element={<ArchivesPage />} />
                 <Route path="/notes/:id" element={<DetailPage />} />
-                <Route path="/notes/new" element={<AddNewPage />} />
+                <Route path="/notes/new" element={<AddNotePage />} />
                 <Route path="/*" element={<NotFoundPage />} />
             </Routes>
         </main>
