@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NoteItem from './NoteItem';
+import LocaleContext from '../contexts/LocaleContext';
 
 function NotesList({ notes }){
+    const { locale } = React.useContext(LocaleContext);
+
     return (
         <div>
             {
@@ -19,7 +22,7 @@ function NotesList({ notes }){
                 </div>
                 :
                 <div className="notes-list-empty">
-                    <p>Tidak ada catatan</p>
+                    <p>{locale === 'id' ? 'Tidak ada catatan' : 'No Notes'}</p>
                 </div>
             }
         </div>

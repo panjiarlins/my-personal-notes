@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import LoginInput from '../components/LoginInput';
 import { login } from '../utils/network-data';
+import LocaleContext from '../contexts/LocaleContext';
 
 function LoginPage({ loginSuccess }){
+    const { locale } = React.useContext(LocaleContext);
     const navigate = useNavigate();
 
     async function onLoginHandler({ email, password }){
@@ -17,9 +19,12 @@ function LoginPage({ loginSuccess }){
 
     return (
         <section className='login-page'>
-            <h2>Yuk, login untuk menggunakan aplikasi.</h2>
+            <h2>{locale === 'id' ? 'Login untuk menggunakan aplikasi' : 'Login to use app'}</h2>
             <LoginInput login={onLoginHandler} />
-            <p>Belum punya akun? <Link to="/register">Daftar di sini</Link></p>
+            <p>
+                {locale === 'id' ? 'Belum punya akun? ' : 'Don\'t have an account? '}
+                <Link to="/register">{locale === 'id' ? 'Daftar di sini' : 'Register here'}</Link>
+            </p>
         </section>
     );
 }

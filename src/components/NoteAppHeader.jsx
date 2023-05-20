@@ -3,14 +3,19 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import ToggleTheme from './ToggleTheme';
+import ToggleLocale from './ToggleLocale';
+import LocaleContext from '../contexts/LocaleContext';
 
 function NoteAppHeader({ name, logout }){
+    const { locale } = React.useContext(LocaleContext);
+
     return (
         <header>
-            <h1><Link to="/">Aplikasi Catatan</Link></h1>
+            <h1><Link to="/">{locale === 'id' ? 'Aplikasi Catatan' : 'Note App'}</Link></h1>
             <nav className="navigation">
                 <ul>
-                    <li><Link to="/archives">Arsip</Link></li>
+                    {!!name && <li><Link to="/archives">{locale === 'id' ? 'Terarsip' : 'Archived'}</Link></li>}
+                    <li><ToggleLocale /></li>
                     <li><ToggleTheme /></li>
                     {!!logout && <li><button className="button-logout" onClick={logout}><FiLogOut /></button></li>}
                     {!!name && <li>{name}</li>}

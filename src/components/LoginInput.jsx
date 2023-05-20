@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useInput from '../hooks/useInput';
+import LocaleContext from '../contexts/LocaleContext';
 
 function LoginInput({ login }){
+    const { locale } = React.useContext(LocaleContext);
     const [email, setEmail] = useInput('');
     const [password, setPassword] = useInput('');
 
@@ -20,10 +22,10 @@ function LoginInput({ login }){
             <label htmlFor="email">Email</label>
             <input name="email" type="email" value={email} onChange={setEmail} />
 
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{locale === 'id' ? 'Kata Sandi' : 'Password'}</label>
             <input name="password" type="password" value={password} onChange={setPassword} />
 
-            <button>Login</button>
+            <button>{locale === 'id' ? 'Masuk' : 'Login'}</button>
         </form>
     );
 }
