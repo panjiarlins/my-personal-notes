@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import ToggleTheme from './ToggleTheme';
 
 function NoteAppHeader({ logout }){
     return (
@@ -10,6 +11,7 @@ function NoteAppHeader({ logout }){
             <nav className="navigation">
                 <ul>
                     <li><Link to="/archives">Arsip</Link></li>
+                    <li><ToggleTheme /></li>
                     <li><button className="button-logout" onClick={logout}><FiLogOut /></button></li>
                 </ul>
             </nav>
