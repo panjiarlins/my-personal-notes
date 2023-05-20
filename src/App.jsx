@@ -64,7 +64,7 @@ function App() {
     return (
       <ThemeContext.Provider value={contextTheme}>
         <div className="app-container">
-          <NoteAppHeader logout={onLogoutHandler} />
+          <NoteAppHeader name={authedUser.name} logout={onLogoutHandler} />
           <main>
               <Routes>
                   <Route path="/" element={<HomePage />} />
@@ -81,7 +81,7 @@ function App() {
     return (
       <ThemeContext.Provider value={contextTheme}>
         <div className="app-container">
-          <NoteAppHeader logout={onLogoutHandler} />
+          <NoteAppHeader />
           <main>
               <Routes>
                   <Route path="/register" element={<RegisterPage />} />

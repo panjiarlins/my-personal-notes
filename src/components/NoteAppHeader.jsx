@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import ToggleTheme from './ToggleTheme';
 
-function NoteAppHeader({ logout }){
+function NoteAppHeader({ name, logout }){
     return (
         <header>
             <h1><Link to="/">Aplikasi Catatan</Link></h1>
@@ -12,7 +12,8 @@ function NoteAppHeader({ logout }){
                 <ul>
                     <li><Link to="/archives">Arsip</Link></li>
                     <li><ToggleTheme /></li>
-                    <li><button className="button-logout" onClick={logout}><FiLogOut /></button></li>
+                    {!!logout && <li><button className="button-logout" onClick={logout}><FiLogOut /></button></li>}
+                    {!!name && <li>{name}</li>}
                 </ul>
             </nav>
         </header>
@@ -20,7 +21,8 @@ function NoteAppHeader({ logout }){
 }
 
 NoteAppHeader.propTypes = {
-    logout: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    logout: PropTypes.func,
 };
 
 export default NoteAppHeader;
