@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useInput from '../hooks/useInput';
 import LocaleContext from '../contexts/LocaleContext';
+import IsLoadingContext from '../contexts/IsLoadingContext';
+import { BiLoaderCircle } from 'react-icons/bi';
 
 function RegisterInput({ register }){
+    const { isLoading } = React.useContext(IsLoadingContext);
     const { locale } = React.useContext(LocaleContext);
     const [name, setName] = useInput('');
     const [email, setEmail] = useInput('');
@@ -12,34 +15,33 @@ function RegisterInput({ register }){
 
     const onSubmitHandler = event => {
         event.preventDefault();
-
-        if (password !== confirmPassword){
-            alert(locale === 'id' ? "Kata Sandi dan Kata Sandi Konfirmasi harus sama!" : "Password and Password Confirmation must be same!");
-            return;
+        if (password === confirmPassword){
+            register({ name, email, password });
+        } else {
+            alert(locale === 'id' ? 'Kata Sandi dan Kata Sandi Konfirmasi harus sama!' : 'Password and Password Confirmation must be same!');
         }
-
-        register({
-            name,
-            email,
-            password,
-        });
     }
 
     return (
-        <form onSubmit={onSubmitHandler} className='input-register'>
+        <form onSubmit={onSubmitHandler} className="input-register">
             <label htmlFor="name">{locale === 'id' ? 'Nama' : 'Name'}</label>
-            <input name="name" type="text" value={name} onChange={setName} />
+            <input name="name" type="text" value={name} onChange={setName} required />
 
             <label htmlFor="email">Email</label>
-            <input name="email" type="email" value={email} onChange={setEmail} />
+            <input name="email" type="email" value={email} onChange={setEmail} required />
 
             <label htmlFor="password">{locale === 'id' ? 'Kata Sandi' : 'Password'}</label>
-            <input name="password" type="password" value={password} onChange={setPassword} />
+            <input name="password" type="password" value={password} onChange={setPassword} required />
 
             <label htmlFor="confirm-password">{locale === 'id' ? 'Kata Sandi Konfirmasi' : 'Password Confirmation'}</label>
-            <input name="confirm-password" type="password" value={confirmPassword} onChange={setConfirmPassword} />
+            <input name="confirm-password" type="password" value={confirmPassword} onChange={setConfirmPassword} required />
 
-            <button>{locale === 'id' ? 'Daftar' : 'Register'}</button>
+            {
+                isLoading ?
+                <button disabled><BiLoaderCircle /></button>
+                :
+                <button>{locale === 'id' ? 'Daftar' : 'Register'}</button>
+            }
         </form>
     );
 }

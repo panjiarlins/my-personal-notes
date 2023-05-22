@@ -3,16 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import RegisterInput from '../components/RegisterInput';
 import { register } from '../utils/network-data';
 import LocaleContext from '../contexts/LocaleContext';
+import IsLoadingContext from '../contexts/IsLoadingContext';
 
 function RegisterPage(){
+    const { toggleIsLoading } = React.useContext(IsLoadingContext);
     const { locale } = React.useContext(LocaleContext);
     const navigate = useNavigate();
 
-    async function onRegisterHandler({ name, email, password }){
-        const { error } = await register({ name, email, password });
-        if (!error){
-            navigate('/');
-        }
+    function onRegisterHandler({ name, email, password }){
+        toggleIsLoading(true);
+        register({ name, email, password })
+            .then(({ error }) => !error && navigate('/'))
+            .finally(() => toggleIsLoading(false));
     }
 
     return (

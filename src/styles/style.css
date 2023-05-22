@@ -269,6 +269,34 @@ main {
   color: var(--on-background);
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  width: 20%;
+  margin: 20% auto;
+}
+
+.loading-dot {
+  background-color: var(--on-background);
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  animation: loading 1s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1, 2.5);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
 @media screen and (min-width: 650px) {
   .notes-list {
     grid-template-columns: repeat(2, 1fr);

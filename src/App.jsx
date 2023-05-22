@@ -12,12 +12,13 @@ import { putAccessToken, getUserLogged } from './utils/network-data';
 import usePrevious from './hooks/usePrevious';
 import ThemeContext from './contexts/ThemeContext';
 import LocaleContext from './contexts/LocaleContext';
+import IsLoadingContext from './contexts/IsLoadingContext';
 
 function App() {
   const [initializing, setInitializing] = React.useState(true);
   const [authedUser, setAuthedUser] = React.useState(null);
 
-  ////////// Theme
+  ////////// Theme Context
   const [theme, setTheme] = React.useState(() => localStorage.getItem('theme') || 'light');
   const prevTheme = usePrevious(theme);
 
@@ -33,7 +34,7 @@ function App() {
     return {
       theme,
       toggleTheme,
-    }
+    };
   }, [theme]);
 
   React.useEffect(() => {
@@ -43,7 +44,7 @@ function App() {
   }, [prevTheme, theme]);
   //////////
 
-  ////////// Locale
+  ////////// Locale Context
   const [locale, setLocale] = React.useState(() => localStorage.getItem('locale') || 'id');
 
   const toggleLocale = () => {
@@ -62,42 +63,72 @@ function App() {
   }, [locale]);
   //////////
 
+  ////////// Loading Context
+  const [isLoading, setIsLoading] = React.useState(() => Boolean(localStorage.getItem('isLoading')) || false);
+
+  const toggleIsLoading = value => {
+    setIsLoading(() => {
+      localStorage.setItem('isLoading', value);
+      return value;
+    });
+  }
+
+  const contextIsLoading = React.useMemo(() => {
+    return {
+      isLoading,
+      toggleIsLoading,
+    };
+  }, [isLoading]);
+  //////////
+
   React.useEffect(() => {
-    getUserLogged().then(({ data }) => {
-      setAuthedUser(data);
-      setInitializing(false);
-    })
+    toggleIsLoading(true)
+    getUserLogged()
+      .then(({ data }) => setAuthedUser(data))
+      .finally(() => {
+        toggleIsLoading(false);
+        setInitializing(false);
+      });
   }, []);
 
   const onLoginSuccessHandler = async ({ accessToken }) => {
     putAccessToken(accessToken);
-    const { data } = await getUserLogged();
-    setAuthedUser(data);
+    toggleIsLoading(true)
+    let userData = null;
+    try {
+      const { data } = await getUserLogged();
+      userData = data;
+    } finally {
+      toggleIsLoading(false);
+    }
+    setAuthedUser(userData);
   }
 
   const onLogoutHandler = () => {
     setAuthedUser(null);
     putAccessToken('');
   }
-
+  
   if (initializing){
     return null;
   } else if (authedUser !== null){
     return (
       <ThemeContext.Provider value={contextTheme}>
         <LocaleContext.Provider value={contextLocale}>
-          <div className="app-container">
-            <NoteAppHeader name={authedUser.name} logout={onLogoutHandler} />
-            <main>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/archives" element={<ArchivesPage />} />
-                <Route path="/notes/:id" element={<DetailPage />} />
-                <Route path="/notes/new" element={<AddNotePage />} />
-                <Route path="/*" element={<NotFoundPage />} />
-              </Routes>
-            </main>
-          </div>
+          <IsLoadingContext.Provider value={contextIsLoading}>
+            <div className="app-container">
+              <NoteAppHeader name={authedUser.name} logout={onLogoutHandler} />
+              <main>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/archives" element={<ArchivesPage />} />
+                  <Route path="/notes/:id" element={<DetailPage />} />
+                  <Route path="/notes/new" element={<AddNotePage />} />
+                  <Route path="/*" element={<NotFoundPage />} />
+                </Routes>
+              </main>
+            </div>
+          </IsLoadingContext.Provider>
         </LocaleContext.Provider>
       </ThemeContext.Provider>
     );
@@ -105,16 +136,18 @@ function App() {
     return (
       <ThemeContext.Provider value={contextTheme}>
         <LocaleContext.Provider value={contextLocale}>
-          <div className="app-container">
-            <NoteAppHeader />
-            <main>
-              <Routes>
-                <Route path="/" element={<LoginPage loginSuccess={onLoginSuccessHandler} />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/*" element={<Navigate to="/" />} />
-              </Routes>
-            </main>
-          </div>
+          <IsLoadingContext.Provider value={contextIsLoading}>
+            <div className="app-container">
+              <NoteAppHeader />
+              <main>
+                <Routes>
+                  <Route path="/" element={<LoginPage loginSuccess={onLoginSuccessHandler} />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/*" element={<Navigate to="/" />} />
+                </Routes>
+              </main>
+            </div>
+          </IsLoadingContext.Provider>
         </LocaleContext.Provider>
       </ThemeContext.Provider>
     );

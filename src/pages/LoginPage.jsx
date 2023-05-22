@@ -4,17 +4,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import LoginInput from '../components/LoginInput';
 import { login } from '../utils/network-data';
 import LocaleContext from '../contexts/LocaleContext';
+import IsLoadingContext from '../contexts/IsLoadingContext';
 
 function LoginPage({ loginSuccess }){
+    const { toggleIsLoading } = React.useContext(IsLoadingContext);
     const { locale } = React.useContext(LocaleContext);
     const navigate = useNavigate();
 
-    async function onLoginHandler({ email, password }){
-        const { error, data } = await login({ email, password });
-        if (!error){
-            loginSuccess(data);
-            navigate('/');
-        }
+    function onLoginHandler({ email, password }){
+        toggleIsLoading(true);
+        login({ email, password })
+            .then(({ error, data }) => {
+                if (!error){
+                    loginSuccess(data);
+                    navigate('/');
+                }
+            })
+            .finally(() => toggleIsLoading(false));
     }
 
     return (
