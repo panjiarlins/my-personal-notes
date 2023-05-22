@@ -6,9 +6,12 @@ import DeleteButton from '../components/DeleteButton';
 import { getNote, archiveNote, unarchiveNote, deleteNote } from '../utils/network-data';
 import IsLoadingContext from '../contexts/IsLoadingContext';
 import Loading from '../components/Loading';
+import LocaleContext from '../contexts/LocaleContext';
+import NotFoundPage from './NotFoundPage';
 
 function DetailPage(){
     const { isLoading, toggleIsLoading } = React.useContext(IsLoadingContext);
+    const { locale } = React.useContext(LocaleContext);
     const navigate = useNavigate();
     const { id } = useParams();
     const [note, setNote] = React.useState(null);
@@ -52,12 +55,12 @@ function DetailPage(){
     if (isLoading){
         return <Loading />;
     } else if (note === null){
-        return null;
+        return <NotFoundPage />;
     } else {
         return (
             <div className="detail-page">
                 <div className="detail-page__title">{note.title}</div>
-                <div className="detail-page__createdAt">{showFormattedDate(note.createdAt)}</div>
+                <div className="detail-page__createdAt">{showFormattedDate(note.createdAt, locale === 'id' ? 'id-ID' : 'en-US')}</div>
                 <div className="detail-page__body">{note.body}</div>
                 <div className="detail-page__action">
                     <ArchiveButton id={id} onArchive={onArchiveHandler} isArchived={note.archived} />

@@ -1,4 +1,4 @@
-const showFormattedDate = (date) => {
+const showFormattedDate = (date, locale) => {
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -6,11 +6,7 @@ const showFormattedDate = (date) => {
     day: 'numeric',
   };
 
-  if (localStorage.getItem('locale') === 'id'){
-    return new Date(date).toLocaleDateString('id-ID', options);
-  } else {
-    return new Date(date).toLocaleDateString('en-US', options);
-  }
+  return new Date(date).toLocaleDateString(locale, options);
 };
 
 export { showFormattedDate };
